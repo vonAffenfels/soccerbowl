@@ -8,7 +8,7 @@
 
 ### Sending commands
 
-    {[cmdObject1, cmdObject2, cmdObjectN]}
+    [cmdObject1, cmdObject2, cmdObjectN]
 
 ### Return objects
 
@@ -22,12 +22,12 @@ errCode is the error number if success is false (else it will be omitted)
 
 Example:
 
-    {[
+    [
         {"cmd": "SetPixel", "args": {"x": 0, "y": 0, "red": 255, "green": 0, "blue": 0}},
         {"cmd": "SetPixel", "args": {"x": 0, "y": 1, "red": 0, "green": 255, "blue": 0}},
         {"cmd": "SetPixel", "args": {"x": 0, "y": 2, "red": 0, "green": 0, "blue": 255}},
         {"cmd": "SwapBuffers"}
-    ]}
+    ]
 
 ##### SetPixel
 

@@ -1,0 +1,39 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/evol.colorpicker.min.js" type="text/javascript" charset="utf-8"></script>
+    
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/ui-lightness/jquery-ui.css">
+    <link href="/css/main.css" type="text/css" rel="stylesheet" />
+    <link href="css/evol.colorpicker.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="colorpicker">
+
+</div>
+
+<div id="matrix">
+
+</div>
+
+<div class="control">
+    <a href="javascript:;" class="is_all" data-color="#000000" style="color: #000000">Alle Schwarz</a> |
+    <a href="javascript:;" class="is_all" data-color="#ffffff" style="color: #000000">Alle Weiß</a> |
+    <a href="javascript:;" class="is_all" data-color="#ff0000" style="color: #ff0000">Alle Rot</a> |
+    <a href="javascript:;" class="is_all" data-color="#00ff00" style="color: #00ff00">Alle Grün</a> |
+    <a href="javascript:;" class="is_all" data-color="#0000ff" style="color: #0000ff">Alle Blau</a> |
+    <a href="javascript:;" class="is_all picker" data-color="picker">Alle ColorPicker Farbe</a> |
+    <a href="javascript:;" class="is_animation_1 picker">Animate it (ColorPicker Farbe)</a>
+</div>
+
+<div class="control">
+    <a href="javascript:;" class="reload">Matrix neu laden</a>
+</div>
+
+</body>
+</html>

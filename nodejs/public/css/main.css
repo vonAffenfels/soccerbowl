@@ -1,0 +1,35 @@
+#matrix {
+    background-color: black;
+    border: 1px solid black;
+    padding: 10px;
+    width: 512px;
+}
+
+#colorpicker {
+    position: absolute;
+    top: 8px;
+    left: 562px;
+}
+
+.led {
+    cursor: pointer;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin: 2px;
+    border: 1px solid white;
+}
+
+a, a:visited, a:active, a:hover {
+    text-decoration: none;
+    color: #000000;
+}
+
+.control {
+    padding-top: 10px;
+}
+
+.control a {
+    padding-right: 10px;
+    padding-left: 10px;
+}

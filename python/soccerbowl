@@ -3,8 +3,9 @@ __version__ = "0.1"
 __author__ = "von Affenfels GmbH"
 
 import sys, argparse, logging, logging.handlers, asyncore
+from socketIO_client import SocketIO, BaseNamespace
 
-logger = logging.getLogger('soccerbowl')
+logger = logging.getLogger()
 
 class SoccerBowl(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
@@ -13,12 +14,20 @@ class SoccerBowl(argparse.ArgumentParser):
         self.add_argument("-d", "--debug", action = "store_true", help = "Enables debug output")
         self.add_argument("--syslog", action = "store_true", help = "Enables logging to syslog")
         
-        self.args = {}
+        self.__args = {}
+
+    def on_test(self, *args):
+        print("ON TEST", args)
+
+    def _initSocketIo(self):
+        self.__socketIo = SocketIO('iot.saij.de', 16666, BaseNamespace)
+        self.__socketIo.on('test', self.on_test)
+        self.__socketIo.emit('test2')
 
     def process(self):
-        self.args = vars(self.parse_args())
+        self.__args = vars(self.parse_args())
 
-        if self.args["syslog"]:
+        if self.__args["syslog"]:
             syslog = logging.handlers.SysLogHandler(address = '/dev/log', facility = logging.handlers.SysLogHandler.LOG_DAEMON);
             syslog.setFormatter(logging.Formatter("soccerbowl: [%(levelname)s] %(message)s"))
             logger.addHandler(syslog)
@@ -27,16 +36,21 @@ class SoccerBowl(argparse.ArgumentParser):
             stdout.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
             logger.addHandler(stdout)
 
-        if self.args["debug"]:
+        if self.__args["debug"]:
             logger.setLevel(logging.DEBUG)
         else:
             logger.setLevel(logging.INFO)
 
+        logging.getLogger('requests').setLevel(logging.WARNING)
+
         logger.info("Started SoccerBowl v%s" % __version__)
+
+        self._initSocketIo()
 
         try:
             # Start loop
-            asyncore.loop()
+            # asyncore.loop()
+            self.__socketIo.wait()
         except KeyboardInterrupt:
             print "Exiting\n"
             sys.exit(0)

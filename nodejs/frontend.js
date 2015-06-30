@@ -36,45 +36,27 @@ io.on('connection', function (socket) {
         socket.broadcast.emit('setPixel', data);
 
         coords = indexToCoords(data.index);
-        commands = [
-            {
-                'cmd': 'SetPixel',
-                'args': {
-                    'x': coords[0],
-                    'y': coords[1],
-                    'red': data.color.red,
-                    'green': data.color.green,
-                    'blue': data.color.blue
-                }
-            },
-            {
-                'cmd': 'SwapBuffers'
-            }
-        ];
-        exports.onDoCommands(commands);
+        if (typeof(exports.serverIo) != 'undefined') {
+            exports.serverIo.emit('SetPixel', {
+                'x': coords[0],
+                'y': coords[1],
+                'color': data.color
+            });
+            exports.serverIo.emit('SwapBuffers');
+        }
     });
 
     socket.on('fill', function(data) {
-        console.log((new Date()) + ' fill');
+        // console.log((new Date()) + ' fill');
         for (var i = 0; i < matrixSize; i++) {
             matrix[i] = data.color;
         }
         socket.broadcast.emit('reloadMatrix', matrix);
 
-        commands = [
-            {
-                'cmd': 'Fill',
-                'args': {
-                    'red': data.color.red,
-                    'green': data.color.green,
-                    'blue': data.color.blue
-                }
-            },
-            {
-                'cmd': 'SwapBuffers'
-            }
-        ];
-        exports.onDoCommands(commands);
+        if (typeof(exports.serverIo) != 'undefined') {
+            exports.serverIo.emit('Fill', data.color);
+            exports.serverIo.emit('SwapBuffers');
+        }
     });
 });
 
@@ -82,6 +64,4 @@ server.listen(11666, function () {
     console.log((new Date()) + ' Frontend is listening on port 11666');
 });
 
-exports.onDoCommands = function (commands) {
-    console.log((new Date()) + ' onDoCommands not implemented')
-}
+exports.serverIo = undefined;

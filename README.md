@@ -11,11 +11,15 @@ retVal can be everything
 
 errCode is the error number if success is false (else it will be omitted)
 
-### Server API Commands
+### API Commands
 
 ##### SetPixel
 
 Sets a pixel at the specific position to the specific color
+
+Direction:
+
+    Server => Client
 
 Arguments:
 
@@ -34,6 +38,10 @@ Returns:
 
 Fills the complete display with the specific color
 
+Direction:
+
+    Server => Client
+
 Arguments:
     
     - Color color
@@ -49,6 +57,10 @@ Returns:
 
 Clears all pixels on the display to black
 
+Direction:
+
+    Server => Client
+
 Arguments:
 
     - Nothing
@@ -60,6 +72,10 @@ Returns:
 ##### SwapBuffers
 
 Swaps front and back buffer
+
+Direction:
+    
+    Server => Client
 
 Arguments:
     
@@ -73,6 +89,10 @@ Returns:
 
 Make a photo with the Raspberry PI camera module and returns the base64 encoded image data.
 
+Direction:
+
+    Server => Client
+
 Arguments:
 
     - Nothing
@@ -80,3 +100,23 @@ Arguments:
 Returns:
 
     - Base64 String
+
+##### SendMatrix
+
+Sends the whole matrix at once
+
+Direction:
+
+    Server => Client
+
+Arguments:
+
+    - Array matrix
+        - Color color
+            - Byte red
+            - Byte green
+            - Byte blue
+
+Returns:
+
+    - Nothing

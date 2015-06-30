@@ -65,3 +65,6 @@ server.listen(11666, function () {
 });
 
 exports.serverIo = undefined;
+exports.getMatrix = function() {
+    return matrix;
+}

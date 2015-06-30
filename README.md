@@ -3,14 +3,6 @@
 ## Server API
 Soccerbowl uses an Socket.IO connection to sending commands.
 
-### Return objects
-
-    {"success": true/false, "return": retVal, "error": errCode}
-
-retVal can be everything
-
-errCode is the error number if success is false (else it will be omitted)
-
 ### API Commands
 
 #### Client => Server

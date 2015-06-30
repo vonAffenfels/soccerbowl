@@ -13,18 +13,14 @@ errCode is the error number if success is false (else it will be omitted)
 
 ### API Commands
 
-##### SetPixel
+#### Client => Server
+##### SetPixelIndex
 
-Sets a pixel at the specific position to the specific color
-
-Direction:
-
-    Server => Client
+Indicates that the client should set one pixel
 
 Arguments:
 
-    - Integer x
-    - Integer y
+    - Integer index
     - Color color
         - Byte red
         - Byte green
@@ -35,15 +31,10 @@ Returns:
     - Nothing
 
 ##### Fill
-
-Fills the complete display with the specific color
-
-Direction:
-
-    Server => Client
+Client has filled its complete viewport with one color
 
 Arguments:
-    
+
     - Color color
         - Byte red
         - Byte green
@@ -53,30 +44,40 @@ Returns:
 
     - Nothing
 
-##### Clear
-
-Clears all pixels on the display to black
-
-Direction:
-
-    Server => Client
+##### GetMatrix
+Sends the whole matrix at once
 
 Arguments:
 
     - Nothing
+
+Returns:
+
+    - Array matrix
+        - Color color
+            - Byte red
+            - Byte green
+            - Byte blue
+
+#### Server => Client
+##### SetPixelIndex
+Indicates that the client should set one pixel
+
+Arguments:
+
+    - Integer index
+    - Color color
+        - Byte red
+        - Byte green
+        - Byte blue
 
 Returns:
 
     - Nothing
 
 ##### SwapBuffers
-
 Swaps front and back buffer
 
-Direction:
-    
-    Server => Client
-
 Arguments:
     
     - Nothing
@@ -85,29 +86,23 @@ Returns:
 
     - Nothing
 
-##### GetPhoto
-
-Make a photo with the Raspberry PI camera module and returns the base64 encoded image data.
-
-Direction:
-
-    Server => Client
+##### Fill
+Indicates that the client should fill its whole viewport with one color
 
 Arguments:
 
-    - Nothing
+    - Color color
+        - Byte red
+        - Byte green
+        - Byte blue
 
 Returns:
 
-    - Base64 String
+    - Nothing
 
-##### SendMatrix
-
-Sends the whole matrix at once
-
-Direction:
-
-    Server => Client
+##### ReloadMatrix
+Indicates that the client should reload the matrix data.
+Should also trigger a swap of buffers
 
 Arguments:
 

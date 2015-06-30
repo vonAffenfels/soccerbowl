@@ -14,16 +14,16 @@ jQuery(function () {
         matrixData[index] = color;
 
         if (send) {
-            socket.emit('setPixelIndex', {index: index, color: color});
+            socket.emit('SetPixelIndex', {index: index, color: color});
         }
     }
 
     function fill(color) {
-        socket.emit('fill', { color: color });
+        socket.emit('Fill', {color: color});
     }
 
     function reloadMatrix() {
-        socket.emit('getMatrix', function (data) {
+        socket.emit('GetMatrix', function (data) {
             for (var i = 0; i < Math.min(data.length, matrixSize); i++) {
                 setPixel(i, data[i], false);
             }
@@ -40,11 +40,11 @@ jQuery(function () {
         return hexToRGB(color);
     }
 
-    socket.on('setPixel', function (data) {
+    socket.on('SetPixelIndex', function (data) {
         setPixel(data.index, data.color, false);
     })
 
-    socket.on('reloadMatrix', function () {
+    socket.on('ReloadMatrix', function (data) {
         for (var i = 0; i < Math.min(data.length, matrixSize); i++) {
             setPixel(i, data[i], false);
         }

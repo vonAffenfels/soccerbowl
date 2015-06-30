@@ -105,6 +105,13 @@ jQuery(function () {
         })(0);
     });
 
+    jQuery('.photo').bind('click', function () {
+        jQuery('.images').html('');
+        socket.emit('RequestPhotos', function (data) {
+            jQuery('.images').append('<img height="226" src="data:image/jpg;base64,' + data + '" />')
+        });
+    })
+
     jQuery('.reload').bind('click', function () {
         reloadMatrix();
     })

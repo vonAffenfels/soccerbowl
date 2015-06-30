@@ -2,10 +2,39 @@
 __version__ = "0.1"
 __author__ = "von Affenfels GmbH"
 
-import sys, argparse, logging, logging.handlers, asyncore
+import sys, argparse, logging, logging.handlers, asyncore, base64
 from socketIO_client import SocketIO, BaseNamespace
 
 logger = logging.getLogger()
+
+class MatrixNamespace(BaseNamespace):
+    def on_connect(self):
+        logger.debug("Connected")
+        self._io.emit("GetMatrix", self.GetMatrixResponse)
+
+    def GetMatrixResponse(self, data):
+        logger.debug("GetMatrixResponse")
+
+    def on_close(self):
+        logger.debug("Closed connection")
+
+    def on_SetPixelIndex(self, data):
+        logger.debug("On SetPixelIndex")
+
+    def on_SwapBuffers(self):
+        logger.debug("On SwapBuffers")
+
+    def on_Fill(self, data):
+        logger.debug("On Fill")
+
+    def on_ReloadMatrix(self, data):
+        logger.debug("On ReloadMatrix")
+
+    def on_MakePhoto(self, cb):
+        logger.debug("On MakePhoto")
+        with open("../testbild.jpg", "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+            cb(encoded_string)
 
 class SoccerBowl(argparse.ArgumentParser):
     def __init__(self, *args, **kwargs):
@@ -13,16 +42,10 @@ class SoccerBowl(argparse.ArgumentParser):
 
         self.add_argument("-d", "--debug", action = "store_true", help = "Enables debug output")
         self.add_argument("--syslog", action = "store_true", help = "Enables logging to syslog")
+        self.add_argument("--host", action = "store", help = "Serverhost", default = "iot.saij.de")
+        self.add_argument("--port", action = "store", help = "Serverport", default = 11666)
         
         self.__args = {}
-
-    def on_test(self, *args):
-        print("ON TEST", args)
-
-    def _initSocketIo(self):
-        self.__socketIo = SocketIO('iot.saij.de', 16666, BaseNamespace)
-        self.__socketIo.on('test', self.on_test)
-        self.__socketIo.emit('test2')
 
     def process(self):
         self.__args = vars(self.parse_args())
@@ -45,7 +68,7 @@ class SoccerBowl(argparse.ArgumentParser):
 
         logger.info("Started SoccerBowl v%s" % __version__)
 
-        self._initSocketIo()
+        self.__socketIo = SocketIO(self.__args["host"], self.__args["port"], MatrixNamespace)
 
         try:
             # Start loop

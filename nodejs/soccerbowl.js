@@ -22,8 +22,11 @@ function indexToCoords(index) {
     return [x, y]
 }
 
+var sockets = [];
+
 io.on('connection', function (socket) {
     console.log((new Date()) + ' Connection established');
+    sockets.push(socket);
 
     socket.on('GetMatrix', function(cb) {
         console.log((new Date()) + ' GetMatrix');
@@ -33,8 +36,8 @@ io.on('connection', function (socket) {
     socket.on('SetPixelIndex', function(data) {
         console.log((new Date()) + ' SetPixelIndex');
         matrix[data.index] = data.color;
-        socket.broadcast.emit('SetPixelIndex', data);
-        socket.broadcast.emit('SwapBuffers');
+        io.emit('SetPixelIndex', data);
+        io.emit('SwapBuffers');
     });
 
     socket.on('Fill', function(data) {
@@ -42,8 +45,18 @@ io.on('connection', function (socket) {
         for (var i = 0; i < matrixSize; i++) {
             matrix[i] = data.color;
         }
-        socket.broadcast.emit('Fill', data);
-        socket.broadcast.emit('SwapBuffers');
+        io.emit('Fill', data);
+        io.emit('SwapBuffers');
+    });
+
+    socket.on('RequestPhotos', function(cb) {
+        console.log((new Date()) + ' RequestPhotos')
+        sockets.forEach(function (val) {
+            val.emit('MakePhoto', function (data) {
+                console.log((new Date()) + ' MakePhoto Callback');
+                cb(data);
+            })
+        })
     });
 });
 

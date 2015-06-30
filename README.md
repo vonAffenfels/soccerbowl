@@ -6,6 +6,19 @@ Soccerbowl uses an Socket.IO connection to sending commands.
 ### API Commands
 
 #### Client => Server
+##### RequestPhotos
+
+Client requests photos from other clients.
+Callback function is called for every photo which arrives.
+
+Arguments:
+
+    - Nothing
+
+Returns:
+
+    - Nothing
+
 ##### SetPixelIndex
 
 Indicates that the client should set one pixel
@@ -107,3 +120,14 @@ Arguments:
 Returns:
 
     - Nothing
+
+##### MakePhoto
+Server requests client to make a photo and send base64 data
+
+Arguments:
+
+    - Nothing
+
+Returns:
+
+    - Base64 String photoData
